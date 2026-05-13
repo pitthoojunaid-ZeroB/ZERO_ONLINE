@@ -159,7 +159,7 @@ input:focus{
   <!-- BRAND HEADER -->
   <div class="brand-header">
     <div class="brand-svg-wrap">
-      <svg viewBox="0 0 400 114" width="110%" style="max-width:390px;display:block;" role="img" aria-label="ZeroB Pure Water Solutions logo">
+      <svg viewBox="0 0 400 114" width="100%" style="max-width:390px;display:block;" role="img" aria-label="ZeroB Pure Water Solutions logo">
         <defs>
           <linearGradient id="dM" x1="0.3" y1="0" x2="0.7" y2="1">
             <stop offset="0%"   stop-color="#72cff5"/>
@@ -173,10 +173,10 @@ input:focus{
         </defs>
 
         <!-- ZERO wordmark, baseline y=82 -->
-        <text x="10" y="82"
+        <text x="10ss" y="82"
           font-family="'Poppins','Arial Black',Arial,sans-serif"
           font-size="88" font-weight="800"
-          fill="#1a6fc4" letter-spacing="5px">ZERO</text>
+          fill="#1a6fc4" letter-spacing="-1">ZERO</text>
 
         <!-- Drop: 50% size, bottom of gap between O and B
              centre x=268, bottom y=109, top y=59, width=28 -->
@@ -248,8 +248,8 @@ input:focus{
             <h4>🗓️ &nbsp;Schedule your service appointment</h4>
             <div class="appt-grid">
               <div>
-                <div class="appt-label"><span>📅</span> Preferred Date *</div>
-                <input type="date" id="apptDate" onchange="onDateChange()">
+               <div class="appt-label"><span>📅</span> Preferred Date *</div>
+  <input type="date" id="apptDate" name="apptDate" onchange="onDateChange()">
                 <div id="dateNote" style="font-size:12px;color:#e07800;margin-top:6px;display:none;">
                   ⚠️ Same-day booking only available before 12:00 noon.
                 </div>
@@ -323,7 +323,7 @@ input:focus{
   <div class="success-screen" id="successScreen">
     <div class="success-icon">💧</div>
     <h2>THANK YOU!</h2>
-    <p id="successMsg">Your feedback has been submitted successfully.<br>We will work hard to keep improving for you.</p>
+    <p id="successMsg">Your feedback has been submitted successfully.<br>We are working hard to improve.</p>
 
     <div class="store-buttons">
       <a href="https://play.google.com/store/apps/details?id=com.ion.zero_b&pcampaignid=web_share" target="_blank" rel="noopener">
@@ -348,8 +348,19 @@ input:focus{
 </div>
 
 <script>
-const SCRIPT_URL=https://script.google.com/macros/s/AKfycbw197KGK_Sn_tTIVVXBvQNaqrTQEq1ECxBvSUJGYyVRlVH2tpLlE3uM4Va6W9eeS2LF/exec
-let fd={customerName:'',mobile:'',email:'',visited:'',apptDate:'',apptSlot:'',satisfied:'',rating:'',reasons:''};
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbxUaByhp6To94vyni8SF1IQnT2zkcU2razP8QUboQIj_zm_MCVYT5YtxYSLpkR83YCX/exec';
+let fd={
+customerName:'',
+mobile:'',
+email:'',
+visited:'',
+apptDate:'',
+apptTime:'',
+apptSlot:'',
+satisfied:'',
+rating:'',
+reasons:''
+};
 let selectedSlot='';
 
 function todayISO(){return new Date().toISOString().split('T')[0];}
@@ -422,7 +433,8 @@ function submitAppointment(){
   const dateVal=document.getElementById('apptDate').value;
   if(!dateVal){alert('Please select a preferred date.');return;}
   if(!selectedSlot){alert('Please select a time slot.');return;}
-  fd.apptDate=dateVal;fd.satisfied='N/A';fd.rating='N/A';fd.reasons='N/A';
+  fd.apptDate = dateVal;
+fd.apptTime = selectedSlot;
   sendData(()=>{
     document.getElementById('successMsg').innerHTML=
       'Your appointment has been booked!<br>'+
@@ -471,6 +483,7 @@ function submitReasons(){
 }
 
 function sendData(cb){
+  fd.submittedAt = new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'});
   fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(fd)})
     .then(r=>r.json()).then(()=>cb()).catch(()=>cb());
 }
