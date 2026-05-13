@@ -249,7 +249,7 @@ input:focus{
             <div class="appt-grid">
               <div>
                <div class="appt-label"><span>📅</span> Preferred Date *</div>
-  <input type="date" id="apptDate" name="apptDate" onchange="onDateChange()">
+  		<input type="date" id="apptDate" name="apptDate" onchange="onDateChange()">
                 <div id="dateNote" style="font-size:12px;color:#e07800;margin-top:6px;display:none;">
                   ⚠️ Same-day booking only available before 12:00 noon.
                 </div>
@@ -355,7 +355,6 @@ mobile:'',
 email:'',
 visited:'',
 apptDate:'',
-apptTime:'',
 apptSlot:'',
 satisfied:'',
 rating:'',
@@ -478,7 +477,7 @@ function selectRating(val,el){
 function submitReasons(){
   const checked=[...document.querySelectorAll('#reasonSection input[type=checkbox]:checked')].map(i=>i.value);
   if(!checked.length){alert('Please select at least one reason.');return;}
-  fd.reasons=checked.join('; ');fd.rating='N/A';fd.apptDate='N/A';fd.apptSlot='N/A';
+  fd.reasons=checked.join('; ');
   sendData(showThankYou);
 }
 
